@@ -457,24 +457,11 @@ if __name__ == "__main__":
     from pprint import pprint
     from time import time
     inicio = time()
-    deb = False
-    if deb:
-        print "</xml>"
-    else:
-        fil = sys.argv[0]
-        grammar = kgrammar(flujo=open('codigo.txt'), archivo='codigo.txt')
-    try:
-        grammar.verificar_sintaxis()
-        grammar.es_identificador_valido()
-        
-    finally:
-        pprint(grammar.palabras_reservadas)
-        pprint(grammar.arbol)
-        print "----------"
-        for i in xrange(len(grammar.lista_programa)):
-            print i,grammar.lista_programa[i]
-        print "----------"
-    if deb:
-        print "</xml>"
+    fil = sys.argv[0]
+    grammar = kgrammar(flujo=open('codigo.txt'), archivo='codigo.txt')
+    pprint(grammar.arbol)
+    
+   for i in xrange(len(grammar.lista_programa)):
+        print i,grammar.lista_programa[i]     
     fin = time()
     print "time: ", fin-inicio
