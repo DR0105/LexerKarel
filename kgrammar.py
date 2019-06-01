@@ -101,39 +101,11 @@ class kgrammar:
         else:
             return False
 
-
-    
-    def while_statement(self, lista_variables, c_funcion):
-        retornar_valor = {
-            'estructura': 'mientras',
-            'argumento': None,
-            'cola': []
-        }
-        self.avanza_token()
-
-        if self.token_actual != '(':
-            raise KarelException("Se esperaba '(' para indicar el argumento lógico del 'while'")
-        self.avanza_token()
-
-        retornar_valor['argumento'] = self.expression(lista_variables)
-
-        if self.token_actual != ')':
-            raise KarelException("Se esperaba ')'")
-        self.avanza_token()
-
-        retornar_valor['cola'] = self.statement(lista_variables, c_funcion, True)
-
-        return retornar_valor
-
-
     def bloque(self):
 
         while self.token_actual == 'define-nueva-instruccion' or self.token_actual == 'define-prototipo-instruccion' or self.token_actual == 'externo':
             if self.token_actual == 'define-nueva-instruccion':
                 self.declaracion_de_procedimiento()
-        for funcion in self.prototipo_funciones.keys():
-            if not self.funciones.has_key(funcion):
-                raise KarelException("La instrucción '%s' tiene prototipo pero no fue definida"%funcion)
         if self.token_actual == 'inicia-ejecucion':
             self.avanza_token()
             self.arbol['main'] = self.expresion_general([], False, False)
@@ -461,69 +433,7 @@ class kgrammar:
 
         return retornar_valor
 
-    def termino(self, lista_variables):
-    
-        retornar_valor = {'o': [self.clausula_y(lista_variables)]} 
-
-        while self.token_actual == 'o' or self.token_actual == 'u':
-            self.avanza_token()
-            retornar_valor['o'].append(self.clausula_y(lista_variables))
-
-        return retornar_valor
-
-    
-        while self.token_actual != '' and self.token_actual != 'fin':
-            retornar_valor += self.ruby_statement(lista_variables, c_funcion, c_bucle)
-
-        return retornar_valor
-
-    
-
-        if self.token_actual in self.instrucciones:
-            if self.token_actual == 'sal-de-instruccion':
-                if c_funcion:
-                    retornar_valor = [self.token_actual]
-                    self.avanza_token()
-                else:
-                    raise KarelException("No es posible usar 'sal-de-instruccion' fuera de una instruccion :)")
-            elif self.token_actual == 'sal-de-bucle' or self.token_actual == 'continua-bucle':
-                if c_bucle:
-                    retornar_valor = [self.token_actual]
-                    self.avanza_token()
-                else:
-                    raise KarelException("No es posible usar '"+self.token_actual.token+"' fuera de un bucle :)")
-            else:
-                if self.token_actual == 'apagate':
-                    self.tiene_apagate = True
-                retornar_valor = [self.token_actual]
-                self.avanza_token()
-        
-            if self.token_actual != '(':
-                raise KarelException("Se esperaba '(' para indicar los parámetros de la funcion")
-            self.avanza_token()
-
-            num_parametros = 0
-            while self.token_actual != ')':
-                retornar_valor[0]['argumento'].append(self.int_exp(lista_variables))
-                num_parametros += 1
-                if self.token_actual == ')':
-                    break
-                elif self.token_actual == ',':
-                    self.avanza_token()
-                else:
-                    raise KarelException("Se esperaba ',', encontré '%s'"%self.token_actual)
-            self.avanza_token()
-
-            self.llamadas_funciones.update({nombre_funcion: num_parametros}) 
-            if self.token_actual != ';':
-                raise KarelException("Se esperaba ';' después de una llamada a función")
-            else:
-                self.avanza_token()
-        else:
-            raise KarelException("Se esperaba un procedimiento, '%s' no es válido"%self.token_actual)
-
-        return retornar_valor
-
+  
     def verificar_sintaxis (self):
         if self.token_actual == 'iniciar-programa':
             if self.avanza_token():
@@ -542,34 +452,6 @@ class kgrammar:
 
         if self.strict and (not self.tiene_apagate):
             raise KarelException("Tu código no tiene 'apagate', esto no es permitido en el modo estricto")
-
-    def es_identificador_valido(self, token):
-        es_valido = True
-        i = 0
-        for caracter in token:
-            if i == 0:
-                if caracter not in ascii_letters:
-                    es_valido = False
-                    break
-            else:
-                if caracter not in self.lexer.palabras+self.lexer.numeros:
-                    es_valido = False
-                    break
-            i += 1
-        return es_valido
-
-    def es_numero(self, token):
-        for caracter in token:
-            if caracter not in self.lexer.numeros:
-                return False 
-        return True
-
-    def xml_prepare(lista):
-        s = ""
-        for i in lista:
-            s += str(i)+" "
-        return s[:-1]
-
 if __name__ == "__main__":
     
     from pprint import pprint
