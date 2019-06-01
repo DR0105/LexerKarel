@@ -1,0 +1,71 @@
+iniciar-programa
+    define-nueva-instruccion orienta-oeste como inicio
+        mientras no-orientado-al-oeste hacer inicio
+            gira-izquierda;
+        fin;
+    fin;
+    define-nueva-instruccion topa-pared como inicio
+        mientras frente-libre hacer inicio
+            avanza;
+        fin;
+    fin;
+    define-nueva-instruccion media-vuelta como inicio
+        gira-izquierda;
+        gira-izquierda;
+    fin;
+    define-nueva-instruccion ve-a-pos-inicial como inicio
+        orienta-oeste;
+        topa-pared;
+        media-vuelta;
+    fin;
+    define-nueva-instruccion recoge-todo como inicio
+        mientras junto-a-zumbador hacer inicio
+            coge-zumbador;                    
+        fin;
+    fin;
+    define-nueva-instruccion recoge-zumbadores como inicio
+        mientras frente-libre hacer inicio
+            recoge-todo;
+            avanza;
+        fin;
+        recoge-todo;
+    fin;
+    define-nueva-instruccion subir como inicio
+        gira-izquierda;
+        mientras derecha-bloqueada hacer inicio
+            avanza;
+        fin;
+    fin;
+    define-nueva-instruccion gira-derecha como inicio
+        repetir 3 veces inicio
+            gira-izquierda;
+        fin;
+    fin;
+    define-nueva-instruccion cruzar como inicio
+        gira-derecha;
+        avanza;
+        gira-derecha;
+    fin;
+    define-nueva-instruccion bajar como inicio
+        mientras frente-libre hacer inicio
+            avanza;
+        fin;
+    fin;
+    define-nueva-instruccion brincar-balla como inicio
+        subir;
+        cruzar;
+        bajar;
+    fin;
+    define-nueva-instruccion dejar-zumbadores como inicio
+        mientras algun-zumbador-en-la-mochila hacer inicio
+            deja-zumbador;
+        fin;
+    fin;
+    inicia-ejecucion
+        ve-a-pos-inicial;
+        recoge-zumbadores;
+        brincar-balla;
+        dejar-zumbadores;
+        apagate;
+    termina-ejecucion
+finalizar-programa
